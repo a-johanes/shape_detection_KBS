@@ -1,7 +1,3 @@
-; (defmodule MAIN 
-;     (export deftemplate objek)
-; )
-;   (export defglobal initial-missionaries initial-cannibals))
 
 (deftemplate objek 
     (slot sisi (type INTEGER) (range 3 6))
@@ -165,7 +161,16 @@
 
 (defrule bentuk-layang-layang
     (bentuk "jajaran genjang")
-    (atribut "sama sisi")
+    (sisi (from ?f1) (length ?l1))
+    (sisi (from ?f2) (length ?l2))
+    (sisi (from ?f3) (length ?l3))
+    (sisi (from ?f4) (length ?l4))
+    (test (neq ?f1 ?f2 ?f3 ?f4))
+    (test (neq ?f2 ?f3 ?f4))
+    (test (neq ?f3 ?f4))
+    (test (sama ?l1 ?l2 5))
+    (test (sama ?l1 ?l3 5))
+    (test (sama ?l1 ?l4 5))
     (sudut (id ?id1) (degree ?deg1))
     (sudut (id ?id2) (degree ?deg2))
     (sudut (id ?id3) (degree ?deg3))
@@ -223,14 +228,14 @@
 (reset)
 (assert (objek (sisi 4)))
 (assert (sisi (from 1) (to 2) (length 20.0)))
-(assert (sisi (from 2) (to 3) (length 5.0)))
+(assert (sisi (from 2) (to 3) (length 10.0)))
 (assert (sisi (from 3) (to 4) (length 20.0)))
-(assert (sisi (from 4) (to 1) (length 5.0)))
+(assert (sisi (from 4) (to 1) (length 10.0)))
 (assert (jumlah-paralel (jumlah 2)))
-(assert (sudut (id 1) (degree 90.0)))
-(assert (sudut (id 2) (degree 90.0)))
-(assert (sudut (id 3) (degree 90.0)))
-(assert (sudut (id 4) (degree 90.0)))
+(assert (sudut (id 1) (degree 120.0)))
+(assert (sudut (id 2) (degree 60.0)))
+(assert (sudut (id 3) (degree 120.0)))
+(assert (sudut (id 4) (degree 60.0)))
 
 
 (agenda)

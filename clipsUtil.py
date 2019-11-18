@@ -3,6 +3,7 @@ import numpy as np
 from typing import List
 from cvProcessor import ShapeData
 from itertools import combinations
+from clips import Environment, Symbol
 
 
 class CLIPS():
@@ -10,6 +11,11 @@ class CLIPS():
         self.shape_list = shape_list
         self.config = config
         self.initShapeFact(self.shape_list)
+        self.env = Environment()
+        with open(config['kbs_file']) as kbs_file:
+            logging.getLogger('clips/load').info('Loading clips file {}'.format(config['kbs_file']))
+            self.env.build(kbs_file.read())
+            # self.env.load(config['kbs_file'])
 
     def processParallel(self, shape: ShapeData):
         logger = logging.getLogger('clips/parallel')
@@ -33,4 +39,16 @@ class CLIPS():
 
     def initShapeFact(self, shape_list: List[ShapeData]):
         for shape in shape_list:
+            for point in shape.degree:
+                # self.env.assert()
+                pass
             self.processParallel(shape)
+
+    def getRules(self):
+        print(self.env.find_template('objek'))
+        self.env.run()
+        for rule in self.env.rules():
+            print(type(rule))
+            print(rule)
+        print('b')
+        return self.env.rules()

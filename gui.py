@@ -2,7 +2,7 @@ import wx
 import wx.xrc
 import wx.richtext as rt
 from cvProcessor import CVProcessor
-from clips import CLIPS
+from clipsUtil import CLIPS
 
 
 class GUI(wx.Frame):
@@ -18,6 +18,7 @@ class GUI(wx.Frame):
         )
 
         self.config = config
+        self.clips = None
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
         self.SetBackgroundColour(wx.Colour(208, 208, 208))
@@ -309,6 +310,8 @@ class GUI(wx.Frame):
         self.open_image_button.Bind(wx.EVT_BUTTON, self.onOpenImageClicked)
         self.shape_selector.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.onShapeSelect)
         self.open_rule_button.Bind(wx.EVT_BUTTON, self.onOpenEditor)
+        self.show_facts_button.Bind(wx.EVT_BUTTON, self.onShowFacts)
+        self.show_rules_button.Bind(wx.EVT_BUTTON, self.onShowRules)
 
     def onOpenImageClicked(self, event):
         btn = event.GetEventObject().GetLabel()
@@ -332,7 +335,8 @@ class GUI(wx.Frame):
             self.source_panel_layout.RecalcSizes()
 
             shape_list = CVProcessor.processImage(pathname, self.config)
-            clips = CLIPS(self.config, shape_list)
+            self.clips = CLIPS(self.config, shape_list)
+            self.clips.getRules()
 
     def onShapeSelect(self, event):
         print(self.shape_selector.GetItemText(event.GetItem()))
@@ -346,6 +350,24 @@ class GUI(wx.Frame):
         editor = Editor(None, data)
         editor.Show()
 
+    def onShowRules(self, event):
+        try:
+            with open(self.config['kbs_file'], 'r') as file:
+                data = file.read()
+        except:
+            raise Exception('File not found')
+        rules = ReadOnlyWindow(None, "All Rules", data)
+        rules.Show()
+
+    def onShowFacts(self, event):
+        try:
+            with open(self.config['kbs_file'], 'r') as file:
+                data = file.read()
+        except:
+            raise Exception('File not found')
+        rules = ReadOnlyWindow(None, "All Rules", data)
+        rules.Show()
+
     def __del__(self):
         pass
 
@@ -358,7 +380,7 @@ class Editor(wx.Frame):
             id=wx.ID_ANY,
             title=wx.EmptyString,
             pos=wx.DefaultPosition,
-            size=wx.Size(577, 553),
+            size=wx.Size(600, 600),
             style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL
         )
 
@@ -401,6 +423,37 @@ class Editor(wx.Frame):
 
     def onExit(self, event):
         self.Close()
+
+    def __del__(self):
+        pass
+
+
+class ReadOnlyWindow(wx.Frame):
+    def __init__(self, parent, title, text_data):
+        wx.Frame.__init__(
+            self,
+            parent,
+            id=wx.ID_ANY,
+            title=title,
+            pos=wx.DefaultPosition,
+            size=wx.Size(500, 500),
+            style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL
+        )
+        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
+
+        main_layout = wx.BoxSizer(wx.VERTICAL)
+
+        self.text = rt.RichTextCtrl(
+            self, wx.ID_ANY, text_data, wx.DefaultPosition, wx.DefaultSize, 0
+        )
+        self.text.Enable(False)
+
+        main_layout.Add(self.text, 1, wx.ALL | wx.EXPAND, 5)
+
+        self.SetSizer(main_layout)
+        self.Layout()
+
+        self.Centre(wx.BOTH)
 
     def __del__(self):
         pass
