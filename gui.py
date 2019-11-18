@@ -1,18 +1,23 @@
 import wx
 import wx.xrc
+import wx.richtext as rt
+from cvProcessor import CVProcessor
+from clips import CLIPS
 
 
 class GUI(wx.Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, config):
         wx.Frame.__init__(
             self,
             parent,
             id=wx.ID_ANY,
-            title='KBS Shape detector',
+            title="PAITEN EX KELIPS",
             pos=wx.DefaultPosition,
-            size=wx.Size(1022, 782),
+            size=wx.Size(1280, 768),
             style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL
         )
+
+        self.config = config
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
         self.SetBackgroundColour(wx.Colour(208, 208, 208))
@@ -39,7 +44,7 @@ class GUI(wx.Frame):
             wx.SystemSettings.GetColour(wx.SYS_COLOUR_APPWORKSPACE)
         )
 
-        source_panel_layout = wx.BoxSizer(wx.VERTICAL)
+        self.source_panel_layout = wx.BoxSizer(wx.VERTICAL)
 
         self.source_panel_title = wx.StaticText(
             self.source_image_panel, wx.ID_ANY, u"Source Image", wx.DefaultPosition, wx.DefaultSize,
@@ -47,17 +52,19 @@ class GUI(wx.Frame):
         )
         self.source_panel_title.Wrap(-1)
 
-        source_panel_layout.Add(self.source_panel_title, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 5)
+        self.source_panel_layout.Add(
+            self.source_panel_title, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 5
+        )
 
         self.source_panel_image = wx.StaticBitmap(
             self.source_image_panel, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition,
             wx.Size(300, 300), 0
         )
-        source_panel_layout.Add(self.source_panel_image, 1, wx.EXPAND | wx.ALL, 5)
+        self.source_panel_layout.Add(self.source_panel_image, 1, wx.EXPAND | wx.ALL, 5)
 
-        self.source_image_panel.SetSizer(source_panel_layout)
+        self.source_image_panel.SetSizer(self.source_panel_layout)
         self.source_image_panel.Layout()
-        source_panel_layout.Fit(self.source_image_panel)
+        self.source_panel_layout.Fit(self.source_image_panel)
         inner_layout_top.Add(self.source_image_panel, 1, wx.EXPAND | wx.ALL, 5)
 
         self.detection_image_panel = wx.Panel(
@@ -137,6 +144,52 @@ class GUI(wx.Frame):
         self.shape_selector = wx.TreeCtrl(
             self.control_panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TR_DEFAULT_STYLE
         )
+
+        all_shapes = self.shape_selector.AddRoot('Semua Bentuk')
+
+        irregular_triangle = self.shape_selector.AppendItem(all_shapes, "Segitiga Tidak Beraturan")
+        irregular_square = self.shape_selector.AppendItem(all_shapes, "Segiempat Tidak Beraturan")
+        irregular_pentagon = self.shape_selector.AppendItem(all_shapes, "Segilima Tidak Beraturan")
+        irregular_hexagon = self.shape_selector.AppendItem(all_shapes, "Segienam Tidak Beraturan")
+
+        acute_triangle = self.shape_selector.AppendItem(irregular_triangle, "Segitiga Lancip")
+        obtuse_triangle = self.shape_selector.AppendItem(irregular_triangle, "Segitiga Tumpul")
+        right_triangle = self.shape_selector.AppendItem(irregular_triangle, "Segitiga Siku-Siku")
+        isosceles_triangle = self.shape_selector.AppendItem(
+            irregular_triangle, "Segitiga Sama Kaki"
+        )
+        equilateral_triangle = self.shape_selector.AppendItem(
+            irregular_triangle, "Segitiga Sama Sisi"
+        )
+        parallelogram = self.shape_selector.AppendItem(irregular_square, "Jajaran Genjang")
+        trapezoid = self.shape_selector.AppendItem(irregular_square, "Trapesium")
+        equilateral_pentagon = self.shape_selector.AppendItem(
+            irregular_pentagon, "Segilima Sama Sisi"
+        )
+        equilateral_hexagon = self.shape_selector.AppendItem(
+            irregular_hexagon, "Segienam Sama Sisi"
+        )
+
+        isosceles_right_triangle = self.shape_selector.AppendItem(
+            isosceles_triangle, "Segitiga Sama Kaki dan Siku-Siku"
+        )
+        isosceles_obtuse_triangle = self.shape_selector.AppendItem(
+            isosceles_triangle, "Segitiga Sama Kaki dan Tumpul"
+        )
+        isosceles_acute_triangle = self.shape_selector.AppendItem(
+            isosceles_triangle, "Segitiga Sama Kaki dan Lancip"
+        )
+        isosceles_acute_triangle = self.shape_selector.AppendItem(
+            isosceles_triangle, "Segitiga Sama Kaki dan Lancip"
+        )
+        regular_square = self.shape_selector.AppendItem(parallelogram, "Segiempat Beraturan")
+        kite_shaped_square = self.shape_selector.AppendItem(
+            parallelogram, "Segiempat bentuk Layang-Layang"
+        )
+        isosceles_trapezoid = self.shape_selector.AppendItem(trapezoid, "Trapesium Sama Kaki")
+        right_aligned_trapezoid = self.shape_selector.AppendItem(trapezoid, "Trapesium Rata Kanan")
+        left_aligned_trapezoid = self.shape_selector.AppendItem(trapezoid, "Trapesium Rata Kiri")
+
         control_layout.Add(
             self.shape_selector, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND | wx.RIGHT | wx.LEFT, 10
         )
@@ -252,6 +305,102 @@ class GUI(wx.Frame):
         self.Layout()
 
         self.Centre(wx.BOTH)
+
+        self.open_image_button.Bind(wx.EVT_BUTTON, self.onOpenImageClicked)
+        self.shape_selector.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.onShapeSelect)
+        self.open_rule_button.Bind(wx.EVT_BUTTON, self.onOpenEditor)
+
+    def onOpenImageClicked(self, event):
+        btn = event.GetEventObject().GetLabel()
+        print("Label of pressed button = ", btn)
+        with wx.FileDialog(
+            self,
+            "Open Image",
+            wildcard="Image files (*.jpg;*.png;*.jpeg)|*.jpg;*.png;*.jpeg",
+            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
+        ) as fileDialog:
+            if fileDialog.ShowModal() == wx.ID_CANCEL:
+                return
+
+            pathname = fileDialog.GetPath()
+            print(pathname)
+            image = wx.Image(pathname, wx.BITMAP_TYPE_ANY)
+            width, height = self.source_panel_image.GetClientSize()
+            image = image.Scale(width, height)
+
+            self.source_panel_image.SetBitmap(wx.Bitmap(image))
+            self.source_panel_layout.RecalcSizes()
+
+            shape_list = CVProcessor.processImage(pathname, self.config)
+            clips = CLIPS(self.config, shape_list)
+
+    def onShapeSelect(self, event):
+        print(self.shape_selector.GetItemText(event.GetItem()))
+
+    def onOpenEditor(self, event):
+        try:
+            with open(self.config['kbs_file'], 'r') as file:
+                data = file.read()
+        except:
+            raise Exception('File not found')
+        editor = Editor(None, data)
+        editor.Show()
+
+    def __del__(self):
+        pass
+
+
+class Editor(wx.Frame):
+    def __init__(self, parent, text_data=''):
+        wx.Frame.__init__(
+            self,
+            parent,
+            id=wx.ID_ANY,
+            title=wx.EmptyString,
+            pos=wx.DefaultPosition,
+            size=wx.Size(577, 553),
+            style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL
+        )
+
+        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
+
+        main_layout = wx.BoxSizer(wx.VERTICAL)
+
+        toolbar_layout = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.save_button = wx.Button(
+            self, wx.ID_ANY, u"Save", wx.DefaultPosition, wx.DefaultSize, 0
+        )
+        toolbar_layout.Add(self.save_button, 0, wx.ALL, 5)
+
+        self.exit_button = wx.Button(
+            self, wx.ID_ANY, u"Exit", wx.DefaultPosition, wx.DefaultSize, 0
+        )
+        toolbar_layout.Add(self.exit_button, 0, wx.ALL, 5)
+
+        main_layout.Add(toolbar_layout, 0, 0, 5)
+
+        self.rich_text = rt.RichTextCtrl(
+            self, wx.ID_ANY, text_data, wx.DefaultPosition, wx.DefaultSize, 0
+        )
+        main_layout.Add(self.rich_text, 1, wx.ALL | wx.EXPAND, 5)
+
+        self.SetSizer(main_layout)
+        self.Layout()
+
+        self.Centre(wx.BOTH)
+        self.save_button.Bind(wx.EVT_BUTTON, self.onSave)
+        self.exit_button.Bind(wx.EVT_BUTTON, self.onExit)
+
+    def onSave(self, event):
+        try:
+            with open(self.config['kbs_file'], "w") as output:
+                output.write(self.rich_text.GetValue())
+        except:
+            raise Exception('Fail to save')
+
+    def onExit(self, event):
+        self.Close()
 
     def __del__(self):
         pass
