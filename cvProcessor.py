@@ -32,11 +32,22 @@ class CVProcessor():
             raise Exception('{} is not an image file'.format(filename))
 
         logger.info('Loaded image with h:{} w:{} c:{}'.format(*img_mat.shape))
+        logger.debug(
+            'Thresholding image with min: {} and max: {}'.format(
+                config['threshold']['min'], config['threshold']['max']
+            )
+        )
 
         gray_mat = cv2.cvtColor(img_mat, cv2.COLOR_BGR2GRAY)
         _, threshold_mat = cv2.threshold(
             gray_mat, config['threshold']['min'], config['threshold']['max'], cv2.THRESH_BINARY
         )
+
+        cv2.imshow('gray', gray_mat)
+        cv2.waitKey(0)
+
+        cv2.imshow('thres', threshold_mat)
+        cv2.waitKey(0)
 
         contours, _ = cv2.findContours(threshold_mat, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -50,10 +61,14 @@ class CVProcessor():
 
         shape_list = []
 
+        logger.debug('Approx poly with eps: {}'.format(config['approx_eps']))
+
         contours = [
             cv2.approxPolyDP(cnt, config['approx_eps'] * cv2.arcLength(cnt, True), True)
             for cnt in contours
         ]
+
+        logger.debug('Allowing shape with <= {} contours'.format(config['max_contour']))
 
         for cnt in filter(lambda x: len(x) <= config['max_contour'], contours):
             logger.info('Processing shape with {} element'.format(len(cnt)))
