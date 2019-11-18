@@ -1,0 +1,10 @@
+{
+    "threshold": {
+        "min": 10,
+        "max": 255
+    },
+    "max_contour": 6,
+    "approx_eps": 0.01,
+    "degree_approx": 0,
+    "length_approx": 0
+}
