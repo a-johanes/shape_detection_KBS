@@ -347,7 +347,7 @@ class GUI(wx.Frame):
                 data = file.read()
         except:
             raise Exception('File not found')
-        editor = Editor(None, data)
+        editor = Editor(None, self.config, data)
         editor.Show()
 
     def onShowRules(self, event):
@@ -373,7 +373,7 @@ class GUI(wx.Frame):
 
 
 class Editor(wx.Frame):
-    def __init__(self, parent, text_data=''):
+    def __init__(self, parent, config, text_data=''):
         wx.Frame.__init__(
             self,
             parent,
@@ -384,6 +384,7 @@ class Editor(wx.Frame):
             style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL
         )
 
+        self.config = config
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         main_layout = wx.BoxSizer(wx.VERTICAL)
@@ -418,8 +419,9 @@ class Editor(wx.Frame):
         try:
             with open(self.config['kbs_file'], "w") as output:
                 output.write(self.rich_text.GetValue())
-        except:
+        except Exception as e:
             raise Exception('Fail to save')
+            print(e)
 
     def onExit(self, event):
         self.Close()
