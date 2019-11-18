@@ -4,7 +4,6 @@ import logging
 import json
 import numpy as np
 from typing import Dict
-from matplotlib import pyplot
 from dataclasses import dataclass
 from typing import List, Tuple
 
