@@ -14,8 +14,8 @@ class CLIPS():
         self.env = Environment()
         with open(config['kbs_file']) as kbs_file:
             logging.getLogger('clips/load').info('Loading clips file {}'.format(config['kbs_file']))
-            self.env.build(kbs_file.read())
-            # self.env.load(config['kbs_file'])
+            # self.env.build(kbs_file.read())
+            self.env.load(config['kbs_file'])
 
     def processParallel(self, shape: ShapeData):
         logger = logging.getLogger('clips/parallel')

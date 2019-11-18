@@ -32,7 +32,7 @@
     )
 )
 
-(set-strategy breadth)
+; (set-strategy breadth)
 
 (deffacts init
     (atribut "sama sisi")
@@ -202,8 +202,7 @@
     ?tidakberaturan <- (atribut "tidak beraturan")
     (bentuk "trapesium")
     (sudut (id ?id1) (degree ?deg1))
-    (sudut (id ?id2) (degree ?deg
-    ; (atribut "sama sisi")2))
+    (sudut (id ?id2) (degree ?deg2))
     (sudut (id ?id3) (degree ?deg3))
     (sudut (id ?id4) (degree ?deg4))
     (test (neq ?id1 ?id2 ?id3 ?id4))
@@ -229,7 +228,7 @@
     (printout t "atribut: " ?atribut crlf)
 )
 
-(reset)
+; (reset)
 
 ;  testing
 
