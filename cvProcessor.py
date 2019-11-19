@@ -42,21 +42,22 @@ class CVProcessor():
             gray_mat, config['threshold']['min'], config['threshold']['max'], cv2.THRESH_BINARY
         )
 
-        cv2.imshow('gray', gray_mat)
-        cv2.waitKey(0)
-
-        cv2.imshow('thres', threshold_mat)
-        cv2.waitKey(0)
-
         contours, _ = cv2.findContours(threshold_mat, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         logger.info('Detected {} shapes'.format(len(contours)))
 
         cv2.drawContours(img_mat, contours, -1, (0, 255, 0), -1)
 
-        cv2.imshow('contours', img_mat)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        if logger.getEffectiveLevel() == logging.DEBUG:
+            cv2.imshow('gray', gray_mat)
+            cv2.waitKey(0)
+
+            cv2.imshow('thres', threshold_mat)
+            cv2.waitKey(0)
+
+            cv2.imshow('contours', img_mat)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
 
         shape_list = []
 
