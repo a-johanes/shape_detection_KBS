@@ -45,6 +45,7 @@
     (assert (panjang-sisi ?l))
     (assert (bentuk "segitiga"))
     (assert (atribut "lancip"))
+    (assert (hit-rule "bentuk-segitiga"))
 )
 
 (defrule bentuk-segiempat
@@ -53,6 +54,7 @@
     =>
     (assert (panjang-sisi ?l))
     (assert (bentuk "segiempat"))
+    (assert (hit-rule "bentuk-segiempat"))
 )
 
 (defrule bentuk-segilima
@@ -61,6 +63,7 @@
     =>
     (assert (panjang-sisi ?l))
     (assert (bentuk "segilima"))
+    (assert (hit-rule "bentuk-segilima"))
 )
 
 (defrule bentuk-segienam
@@ -69,6 +72,7 @@
     =>
     (assert (panjang-sisi ?l))
     (assert (bentuk "segienam"))
+    (assert (hit-rule "bentuk-segienam"))
 )
 
 (defrule tidak-sama-sisi
@@ -80,6 +84,7 @@
     (retract ?sama)
     (retract ?panjang)
     (assert (atribut "tidak beraturan"))
+    (assert (hit-rule "tidak-sama-sisi"))
 )
 
 (defrule sama-kaki
@@ -102,6 +107,7 @@
     =>
     (retract ?tidakberaturan)
     (assert (atribut "sama kaki"))
+    (assert (hit-rule "sama-kaki"))
 )
 
 (defrule tumpul  (atribut "sama sisi")
@@ -112,6 +118,7 @@
     =>
     (retract ?lancip)
     (assert (atribut "tumpul"))
+    (assert (hit-rule "tumpul"))
 )
 
 (defrule siku-siku
@@ -122,6 +129,7 @@
     =>
     (retract ?lancip)
     (assert (atribut "siku-siku"))
+    (assert (hit-rule "siku-siku"))
 )
 
 (defrule jajaran-genjang
@@ -133,6 +141,7 @@
     (assert (bentuk "jajaran genjang"))
     (assert (atribut "beraturan"))
     (assert (besar-sudut ?deg))
+    (assert (hit-rule "jajaran-genjang"))
 )
 
 (defrule trapesium
@@ -141,6 +150,7 @@
     =>
     (retract ?bentuk)
     (assert (bentuk "trapesium"))
+    (assert (hit-rule "trapesium"))
 )
 
 (defrule tidak-beraturan
@@ -151,6 +161,7 @@
     (test (not-sama ?deg1 ?deg2 1))
     =>
     (retract ?beraturan)
+    (assert (hit-rule "tidak-beraturan"))
 )
 
 (defrule bentuk-layang-layang
@@ -177,6 +188,7 @@
     (test (not-sama ?deg1 ?deg3 1))
     =>
     (assert (atribut "bentuk layang-layang"))
+    (assert (hit-rule "bentuk-layang-layang"))
 )
 
 (defrule rata-kiri
@@ -197,6 +209,7 @@
     =>
     (retract ?tidakberaturan)
     (assert (atribut "rata-kiri"))
+    (assert (hit-rule "rata-kiri"))
 )
 
 (defrule rata-kanan
@@ -217,14 +230,17 @@
     =>
     (retract ?tidakberaturan)
     (assert (atribut "rata-kanan"))
+    (assert (hit-rule "rata-kanan"))
 )
 
 (defrule print-solusi
     (tes ?id)
     (bentuk ?bentuk)
     (atribut ?atribut)
+    (ans ?ans)
     =>
     (printout t "tes id: " ?id crlf)
     (printout t "bentuk: " ?bentuk crlf)
     (printout t "atribut: " ?atribut crlf)
+    (printout t "ans: " ?ans crlf)
 )
