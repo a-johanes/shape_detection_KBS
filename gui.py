@@ -343,14 +343,15 @@ class GUI(wx.Frame):
             self.detection_panel_image.SetBitmap(wx.Bitmap(image))
             self.detection_panel_layout.RecalcSizes()
 
-            for result in result_list:
-                for hit_rule in result.hit_rule:
-                    self.hit_rules_list.Append(hit_rule)
-                
-                for fact_out in result.fact_out:
-                    self.matched_facts_list.Append(fact_out)
+            for hit_rule in result_list[valid_shape].hit_rule:
+                self.hit_rules_list.Append(hit_rule)
+            
+            for fact_out in result_list[valid_shape].fact_out:
+                self.matched_facts_list.Append(fact_out)
             self.detection_result_list.Append('Sama')
         else:
+            self.detection_panel_image.SetBitmap(wx.NullBitmap)
+            self.detection_panel_layout.RecalcSizes()
             self.detection_result_list.Append('Tidak Sama')
 
     def onShapeSelect(self, event):
