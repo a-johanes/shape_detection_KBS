@@ -158,14 +158,42 @@
     },
     {
         "name": "Segilima tidak beraturan",
-        "include": [],
-        "excule": [],
-        "child": []
+        "include": [
+            "segilima",
+            "tidak beraturan"
+        ],
+        "excule": [
+            "sama sisi"
+        ],
+        "child": [
+            {
+                "name": "Segilima sama sisi",
+                "include": [
+                    "segilima",
+                    "sama sisi"
+                ],
+                "excule": []
+            }
+        ]
     },
     {
         "name": "Segienam tidak beraturan",
-        "include": [],
-        "excule": [],
-        "child": []
+        "include": [
+            "segienam",
+            "tidak beraturan"
+        ],
+        "excule": [
+            "sama sisi"
+        ],
+        "child": [
+            {
+                "name": "Segienam sama sisi",
+                "include": [
+                    "segienam",
+                    "sama sisi"
+                ],
+                "excule": []
+            }
+        ]
     }
 ]
