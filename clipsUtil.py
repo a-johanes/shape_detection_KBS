@@ -73,6 +73,13 @@ class CLIPS():
     def factNormalizer(self, fact: str) -> str:
         return re.sub('^(f-\d+\s+)', '', fact)
 
+    def filterFact(self, fact: str, key: str) -> str:
+        match = re.match('^\({} "([a-z-]+)"\)$'.format(key), fact)
+        if match is not None:
+            return match.groups()[0]
+        else:
+            return None
+
     def getRules(self) -> str:
         text_output = []
         for rule in self.static_env.rules():
@@ -81,17 +88,19 @@ class CLIPS():
         return '\n'.join(text_output)
 
     def run(self) -> List[List[str]]:
+        logger = logging.getLogger('clips/run')
+        logger.info('Running clips for all shape')
         hit_rule = []
         for env in self.env:
             env.run()
             temp_rule_hit = []
             for fact in env.facts():
                 fact_string = self.factNormalizer(str(fact))
-                rule_hit_match = re.match('^\(hit-rule "([a-z-]+)"\)$', fact_string)
+                rule_hit_match = self.filterFact(fact_string, 'hit-rule')
                 if (rule_hit_match is not None):
-                    temp_rule_hit.append(rule_hit_match.groups()[0])
+                    temp_rule_hit.append(rule_hit_match)
             hit_rule.append(temp_rule_hit)
-
+            logger.debug('Hit rules: {}'.format(temp_rule_hit))
         return hit_rule
 
     def reset(self) -> None:
@@ -116,3 +125,5 @@ class CLIPS():
 
     def isShapeLoaded(self) -> bool:
         return self.is_shape_init
+
+    # def isShapeMatched(self, )
