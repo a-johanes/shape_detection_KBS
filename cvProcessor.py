@@ -3,9 +3,8 @@ import os
 import logging
 import json
 import numpy as np
-from typing import Dict
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 
 @dataclass()
