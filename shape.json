@@ -75,7 +75,8 @@
                 "include": [
                     "segitiga",
                     "sama sisi"
-                ]
+                ],
+                "exclude": []
             }
         ]
     },
@@ -92,7 +93,7 @@
             {
                 "name": "Jajaran genjang",
                 "include": [
-                    "jajaran Genjang",
+                    "jajaran genjang",
                     "tidak beraturan"
                 ],
                 "exclude": [],
@@ -112,7 +113,8 @@
                             "jajaran genjang",
                             "sama sisi",
                             "bentuk layang-layang"
-                        ]
+                        ],
+                        "exclude": []
                     }
                 ]
             },
@@ -162,7 +164,7 @@
             "segilima",
             "tidak beraturan"
         ],
-        "excule": [
+        "exclude": [
             "sama sisi"
         ],
         "child": [
@@ -172,7 +174,7 @@
                     "segilima",
                     "sama sisi"
                 ],
-                "excule": []
+                "exclude": []
             }
         ]
     },
@@ -182,7 +184,7 @@
             "segienam",
             "tidak beraturan"
         ],
-        "excule": [
+        "exclude": [
             "sama sisi"
         ],
         "child": [
@@ -192,7 +194,7 @@
                     "segienam",
                     "sama sisi"
                 ],
-                "excule": []
+                "exclude": []
             }
         ]
     }

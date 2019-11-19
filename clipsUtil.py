@@ -48,9 +48,12 @@ class CLIPS():
         parallel_set = set()
 
         for side_pair in side_combin:
+            logger.debug('Check pair {}'.format(side_pair))
             if (np.isinf(side_pair[0][3]) and np.isinf(side_pair[1][3])):
+                logger.debug('Inf pair {}'.format(side_pair))
                 parallel_set.add((side_pair[0][0], side_pair[1][0]))
             if (np.abs(side_pair[0][3] - side_pair[1][3]) < self.config['slope_eps']):
+                logger.debug('eps pair {}'.format(side_pair))
                 parallel_set.add((side_pair[0][0], side_pair[1][0]))
 
         logger.debug('Parallel result set {}'.format(parallel_set))

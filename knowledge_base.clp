@@ -208,7 +208,7 @@
     (test (> ?deg4 90.0))
     =>
     (retract ?tidakberaturan)
-    (assert (atribut "rata-kiri"))
+    (assert (atribut "rata kiri"))
     (assert (hit-rule "rata-kiri"))
 )
 
@@ -229,7 +229,7 @@
     (test (> ?deg4 90.0))
     =>
     (retract ?tidakberaturan)
-    (assert (atribut "rata-kanan"))
+    (assert (atribut "rata kanan"))
     (assert (hit-rule "rata-kanan"))
 )
 
