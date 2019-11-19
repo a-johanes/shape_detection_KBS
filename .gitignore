@@ -111,3 +111,6 @@ dmypy.json
 
 *.png
 *.jpg
+
+!test_image/*.png
+!test_image/*.jpg
