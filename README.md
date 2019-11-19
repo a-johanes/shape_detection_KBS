@@ -25,9 +25,11 @@ Deteksi bentuk dasar geometri berdasarkan *Knowledge Based System* (KBS)
 2. Membuka gambar dengan tombol `Open Image`
 3. Memilih bentuk dasar geometri dari daftar bentuk
 4. Menekan tombol `Run` untuk mencari bentuk dasar geometri pada gambar
-5. Dapat melakukan perubahan pada rule dengan tombol `Open Rule Editor`
-6. Dapat melihat rule yang ada pada
 
+Selain itu, dapat dilakukan juga beberapa hal berikut:
+- Dapat melakukan perubahan pada rule dengan tombol `Open Rule Editor`
+- Dapat melihat rule yang ada pada program dengan tombol `Show Rules`
+- Dapat melihat fakta-fakta yang ada pada program dengan tombol `Show Facts`
 
 ## Author
   - 13517012 / Johanes
