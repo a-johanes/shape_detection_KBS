@@ -18,7 +18,7 @@ class GUI(wx.Frame):
         )
 
         self.config = config
-        self.clips = None
+        self.clips = CLIPS(self.config)
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
         self.SetBackgroundColour(wx.Colour(208, 208, 208))
@@ -335,8 +335,7 @@ class GUI(wx.Frame):
             self.source_panel_layout.RecalcSizes()
 
             shape_list = CVProcessor.processImage(pathname, self.config)
-            self.clips = CLIPS(self.config, shape_list)
-            self.clips.getRules()
+            self.clips.setShape(shape_list)
 
     def onShapeSelect(self, event):
         print(self.shape_selector.GetItemText(event.GetItem()))
@@ -351,11 +350,7 @@ class GUI(wx.Frame):
         editor.Show()
 
     def onShowRules(self, event):
-        try:
-            with open(self.config['kbs_file'], 'r') as file:
-                data = file.read()
-        except:
-            raise Exception('File not found')
+        data = self.clips.getRules()
         rules = ReadOnlyWindow(None, "All Rules", data)
         rules.Show()
 
@@ -446,9 +441,13 @@ class ReadOnlyWindow(wx.Frame):
         main_layout = wx.BoxSizer(wx.VERTICAL)
 
         self.text = rt.RichTextCtrl(
-            self, wx.ID_ANY, text_data, wx.DefaultPosition, wx.DefaultSize, 0
+            self,
+            wx.ID_ANY,
+            text_data,
+            pos=wx.DefaultPosition,
+            size=wx.DefaultSize,
+            style=rt.RE_READONLY,
         )
-        self.text.Enable(False)
 
         main_layout.Add(self.text, 1, wx.ALL | wx.EXPAND, 5)
 
