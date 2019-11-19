@@ -141,7 +141,7 @@ class GUI(wx.Frame):
         )
 
         self.control_text = wx.StaticText(
-            self.control_panel, wx.ID_ANY, u"What shape do you want?", wx.DefaultPosition,
+            self.control_panel, wx.ID_ANY, u"Bentuk dipilih : (tidak ada)", wx.DefaultPosition,
             wx.DefaultSize, 0
         )
         self.control_text.Wrap(-1)
@@ -162,6 +162,12 @@ class GUI(wx.Frame):
         control_layout.Add(
             self.shape_selector, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND | wx.RIGHT | wx.LEFT, 10
         )
+
+        self.run_button = wx.Button(
+            self.control_panel, wx.ID_ANY, u"Run", wx.DefaultPosition, wx.DefaultSize, 0
+        )
+        control_layout.Add(self.run_button, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND, 5)
+        self.run_button.Enable(False)
 
         self.control_panel.SetSizer(control_layout)
         self.control_panel.Layout()
@@ -332,8 +338,11 @@ class GUI(wx.Frame):
 
     def onShapeSelect(self, event):
         item_data = self.shape_selector.GetItemData(event.GetItem())
+        print(item_data)
         if item_data is not None:
             if not (('invalid' in item_data) and (item_data['invalid'])):
+                self.control_text.SetLabel(f'Bentuk dipilih : {item_data["name"]}')
+                self.run_button.Enable(True)
                 self.selected_shape = item_data
                 logging.getLogger('gui/tree-select').debug('Selected: {}'.format(item_data))
 
@@ -342,20 +351,36 @@ class GUI(wx.Frame):
             with open(self.config['kbs_file'], 'r') as file:
                 data = file.read()
         except:
-            raise Exception('File not found')
-        editor = Editor(None, self.config, data)
+            msg = wx.MessageDialog(
+                self, 'Editor gagal dibuka. File .clp tidak ditemukan.',
+                caption = 'Error Editor',
+                style = wx.OK | wx.ICON_ERROR,
+                pos = wx.DefaultPosition
+            )
+            msg.ShowModal()
+            msg.Destroy()
+            return
+        editor = Editor(self, self.config, data)
         editor.Show()
 
     def onShowRules(self, event):
         data = self.clips.getRules()
-        rules = ReadOnlyWindow(None, "All Rules", data)
+        rules = ReadOnlyWindow(self, "All Rules", data)
         rules.Show()
 
     def onShowFacts(self, event):
         if not self.clips.isShapeLoaded():
-            raise Exception('Shape not loaded')
+            msg = wx.MessageDialog(
+                self, 'Fakta tidak dapat ditampilkan. Belum ada gambar yang dimuat.',
+                caption = 'Error Fakta',
+                style = wx.OK | wx.ICON_ERROR,
+                pos = wx.DefaultPosition
+            )
+            msg.ShowModal()
+            msg.Destroy()
+            return
         data = self.clips.getFacts()
-        rules = ReadOnlyWindow(None, "All Facts", data)
+        rules = ReadOnlyWindow(self, "All Facts", data)
         rules.Show()
 
     def treeCreator(self, shape, root):
@@ -417,7 +442,15 @@ class Editor(wx.Frame):
             with open(self.config['kbs_file'], "w") as output:
                 output.write(self.rich_text.GetValue())
         except Exception as e:
-            raise Exception('Fail to save')
+            msg = wx.MessageDialog(
+                self, 'Save gagal dilakukan. File .clp tidak ada.',
+                caption = 'Error Save',
+                style = wx.OK | wx.ICON_ERROR,
+                pos = wx.DefaultPosition
+            )
+            msg.ShowModal()
+            msg.Destroy()
+            return
             logging.getLogger('gui/editor').error('Fail to save')
 
     def onExit(self, event):
