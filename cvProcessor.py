@@ -16,8 +16,18 @@ class ShapeData():
 
 class CVProcessor():
     @staticmethod
-    def processImage(filename: str, config: Dict) -> List[ShapeData]:
-        logger = logging.getLogger('opencv')
+    def genSelectedImage(filename: str, config: Dict, selected: int) -> None:
+        logger = logging.getLogger('opencv/gen')
+
+        contour, mat = CVProcessor.getContour(filename, config, selected)
+
+        selected_contour = contour[selected]
+
+        cv2.imwrite('temp.png', mat)
+
+    @staticmethod
+    def getContour(filename: str, config: Dict, selected: int = -1) -> Tuple:
+        logger = logging.getLogger('opencv/contour')
 
         if not os.path.isfile(filename):
             logger.error('{} is not a file'.format(filename))
@@ -45,7 +55,7 @@ class CVProcessor():
 
         logger.info('Detected {} shapes'.format(len(contours)))
 
-        cv2.drawContours(img_mat, contours, -1, (0, 255, 0), -1)
+        cv2.drawContours(img_mat, contours, selected, (0, 255, 0), -1)
 
         if logger.getEffectiveLevel() == logging.DEBUG:
             cv2.imshow('gray', gray_mat)
@@ -58,14 +68,22 @@ class CVProcessor():
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
-        shape_list = []
-
         logger.debug('Approx poly with eps: {}'.format(config['approx_eps']))
 
         contours = [
             cv2.approxPolyDP(cnt, config['approx_eps'] * cv2.arcLength(cnt, True), True)
             for cnt in contours
         ]
+
+        return (contours, img_mat)
+
+    @staticmethod
+    def processImage(filename: str, config: Dict) -> List[ShapeData]:
+        logger = logging.getLogger('opencv/process')
+
+        shape_list = []
+
+        contours, _ = CVProcessor.getContour(filename, config)
 
         logger.debug('Allowing shape with <= {} contours'.format(config['max_contour']))
 

@@ -5,6 +5,9 @@ import wx.richtext as rt
 from cvProcessor import CVProcessor
 from clipsUtil import CLIPS
 
+# TODO: Add run button
+# TODO: Populate 3 bottom panel
+
 
 class GUI(wx.Frame):
     def __init__(self, parent, config):
@@ -21,6 +24,7 @@ class GUI(wx.Frame):
         self.config = config
         self.clips = CLIPS(self.config)
         self.selected_shape = None
+        self.file_name = None
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
         self.SetBackgroundColour(wx.Colour(208, 208, 208))
@@ -290,7 +294,8 @@ class GUI(wx.Frame):
                 return
 
             pathname = fileDialog.GetPath()
-            print(pathname)
+            self.file_name = pathname
+            logging.getLogger('gui/file').info('Opening {}'.format(pathname))
             image = wx.Image(pathname, wx.BITMAP_TYPE_ANY)
             width, height = self.source_panel_image.GetClientSize()
             image = image.Scale(width, height)
@@ -320,8 +325,10 @@ class GUI(wx.Frame):
         result_list = self.clips.run()
 
         valid_shape = self.checkShape(result_list)
-
-        logging.getLogger('gui/run').info('Detected shape in index {}'.format(valid_shape))
+        if valid_shape is not None:
+            logging.getLogger('gui/run').info('Detected shape in index {}'.format(valid_shape))
+            CVProcessor.genSelectedImage(self.file_name, self.config, valid_shape)
+            # TODO: Load hasil di temp.png ke wx
 
     def onShapeSelect(self, event):
         item_data = self.shape_selector.GetItemData(event.GetItem())
