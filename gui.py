@@ -53,7 +53,7 @@ class GUI(wx.Frame):
         self.source_panel_layout = wx.BoxSizer(wx.VERTICAL)
 
         self.source_panel_title = wx.StaticText(
-            self.source_image_panel, wx.ID_ANY, u"Source Image", wx.DefaultPosition, wx.DefaultSize,
+            self.source_image_panel, wx.ID_ANY, u"Gambar Asal", wx.DefaultPosition, wx.DefaultSize,
             0
         )
         self.source_panel_title.Wrap(-1)
@@ -83,7 +83,7 @@ class GUI(wx.Frame):
         self.detection_panel_layout = wx.BoxSizer(wx.VERTICAL)
 
         self.detection_panel_title = wx.StaticText(
-            self.detection_image_panel, wx.ID_ANY, u"Detection Image", wx.DefaultPosition,
+            self.detection_image_panel, wx.ID_ANY, u"Deteksi Gambar", wx.DefaultPosition,
             wx.DefaultSize, 0
         )
         self.detection_panel_title.Wrap(-1)
@@ -111,14 +111,14 @@ class GUI(wx.Frame):
         control_layout = wx.BoxSizer(wx.VERTICAL)
 
         self.open_image_button = wx.Button(
-            self.control_panel, wx.ID_ANY, u"Open Image", wx.DefaultPosition, wx.DefaultSize, 0
+            self.control_panel, wx.ID_ANY, u"Buka Gambar", wx.DefaultPosition, wx.DefaultSize, 0
         )
         control_layout.Add(
             self.open_image_button, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND, 5
         )
 
         self.open_rule_button = wx.Button(
-            self.control_panel, wx.ID_ANY, u"Open Rule Editor", wx.DefaultPosition, wx.DefaultSize,
+            self.control_panel, wx.ID_ANY, u"Buka Rule Editor", wx.DefaultPosition, wx.DefaultSize,
             0
         )
         control_layout.Add(
@@ -126,14 +126,14 @@ class GUI(wx.Frame):
         )
 
         self.show_rules_button = wx.Button(
-            self.control_panel, wx.ID_ANY, u"Show Rules", wx.DefaultPosition, wx.DefaultSize, 0
+            self.control_panel, wx.ID_ANY, u"Tampilkan Rules", wx.DefaultPosition, wx.DefaultSize, 0
         )
         control_layout.Add(
             self.show_rules_button, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND, 5
         )
 
         self.show_facts_button = wx.Button(
-            self.control_panel, wx.ID_ANY, u"Show Facts", wx.DefaultPosition, wx.DefaultSize, 0
+            self.control_panel, wx.ID_ANY, u"Tampilkan Fakta", wx.DefaultPosition, wx.DefaultSize, 0
         )
         control_layout.Add(
             self.show_facts_button, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND, 5
@@ -163,7 +163,7 @@ class GUI(wx.Frame):
         )
 
         self.run_button = wx.Button(
-            self.control_panel, wx.ID_ANY, u"Run", wx.DefaultPosition, wx.DefaultSize, 0
+            self.control_panel, wx.ID_ANY, u"Jalankan", wx.DefaultPosition, wx.DefaultSize, 0
         )
         control_layout.Add(self.run_button, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND, 5)
         self.run_button.Enable(False)
@@ -193,7 +193,7 @@ class GUI(wx.Frame):
         detection_result_layout = wx.BoxSizer(wx.VERTICAL)
 
         self.detection_result_title = wx.StaticText(
-            self.detection_result_panel, wx.ID_ANY, u"Detection Result", wx.DefaultPosition,
+            self.detection_result_panel, wx.ID_ANY, u"Hasil Deteksi", wx.DefaultPosition,
             wx.DefaultSize, 0
         )
         self.detection_result_title.Wrap(-1)
@@ -224,7 +224,7 @@ class GUI(wx.Frame):
         matched_facts_layout = wx.BoxSizer(wx.VERTICAL)
 
         self.mathced_facts_title = wx.StaticText(
-            self.matched_facts_panel, wx.ID_ANY, u"Matched Facts", wx.DefaultPosition,
+            self.matched_facts_panel, wx.ID_ANY, u"Fakta yang Cocok", wx.DefaultPosition,
             wx.DefaultSize, 0
         )
         self.mathced_facts_title.Wrap(-1)
@@ -291,7 +291,7 @@ class GUI(wx.Frame):
         btn = event.GetEventObject().GetLabel()
         with wx.FileDialog(
             self,
-            "Open Image",
+            "Buka Gambar",
             wildcard="Image files (*.jpg;*.png;*.jpeg)|*.jpg;*.png;*.jpeg",
             style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST
         ) as fileDialog:
@@ -349,9 +349,9 @@ class GUI(wx.Frame):
                 
                 for fact_out in result.fact_out:
                     self.matched_facts_list.Append(fact_out)
-            self.detection_result_list.Append('Yes')
+            self.detection_result_list.Append('Sama')
         else:
-            self.detection_result_list.Append('No')
+            self.detection_result_list.Append('Tidak Sama')
 
     def onShapeSelect(self, event):
         item_data = self.shape_selector.GetItemData(event.GetItem())
@@ -382,7 +382,7 @@ class GUI(wx.Frame):
 
     def onShowRules(self, event):
         data = self.clips.getRules()
-        rules = ReadOnlyWindow(self, "All Rules", data)
+        rules = ReadOnlyWindow(self, "Semua Rules", data)
         rules.Show()
 
     def onShowFacts(self, event):
@@ -397,7 +397,7 @@ class GUI(wx.Frame):
             msg.Destroy()
             return
         data = self.clips.getFacts()
-        rules = ReadOnlyWindow(self, "All Facts", data)
+        rules = ReadOnlyWindow(self, "Semua Fakta", data)
         rules.Show()
 
     def treeCreator(self, shape, root):
