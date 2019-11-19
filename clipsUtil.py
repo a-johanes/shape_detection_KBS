@@ -7,15 +7,17 @@ from clips import Environment, Symbol
 
 
 class CLIPS():
-    def __init__(self, config, shape_list):
-        self.shape_list = shape_list
+    def __init__(self, config):
         self.config = config
-        self.initShapeFact(self.shape_list)
         self.env = Environment()
         with open(config['kbs_file']) as kbs_file:
             logging.getLogger('clips/load').info('Loading clips file {}'.format(config['kbs_file']))
             # self.env.build(kbs_file.read())
             self.env.load(config['kbs_file'])
+
+    def setShape(self, shape_list):
+        self.shape_list = shape_list
+        self.initShapeFact(self.shape_list)
 
     def processParallel(self, shape: ShapeData):
         logger = logging.getLogger('clips/parallel')
@@ -45,10 +47,9 @@ class CLIPS():
             self.processParallel(shape)
 
     def getRules(self):
-        print(self.env.find_template('objek'))
         self.env.run()
+        text_output = []
         for rule in self.env.rules():
-            print(type(rule))
-            print(rule)
-        print('b')
-        return self.env.rules()
+            text_output.append(str(rule))
+
+        return '\n'.join(text_output)
