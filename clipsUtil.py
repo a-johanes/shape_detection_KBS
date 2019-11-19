@@ -5,6 +5,13 @@ from typing import List, Dict, Set, Tuple
 from cvProcessor import ShapeData
 from itertools import combinations
 from clips import Environment, Symbol
+from dataclasses import dataclass
+
+
+@dataclass
+class CLIPSResult():
+    hit_rule: Set[str]
+    fact_out: Set[str]
 
 
 class CLIPS():
@@ -14,6 +21,7 @@ class CLIPS():
         self.static_env = Environment()
         self.env = []
         self.shape_fact = ''
+        self.run_result = []
         logging.getLogger('clips/load').info('Loading clips file {}'.format(config['kbs_file']))
         self.static_env.load(config['kbs_file'])
 
@@ -74,7 +82,7 @@ class CLIPS():
         return re.sub('^(f-\d+\s+)', '', fact)
 
     def filterFact(self, fact: str, key: str) -> str:
-        match = re.match('^\({} "([a-z-]+)"\)$'.format(key), fact)
+        match = re.match('^\({} "([a-z- ]+)"\)$'.format(key), fact)
         if match is not None:
             return match.groups()[0]
         else:
@@ -87,21 +95,37 @@ class CLIPS():
 
         return '\n'.join(text_output)
 
-    def run(self) -> List[List[str]]:
+    def run(self) -> List[CLIPSResult]:
         logger = logging.getLogger('clips/run')
         logger.info('Running clips for all shape')
-        hit_rule = []
+        self.run_result = []
         for env in self.env:
+            logger.debug('Checking env')
             env.run()
-            temp_rule_hit = []
+            temp_rule_hit = set()
+            temp_fact_out = set()
             for fact in env.facts():
                 fact_string = self.factNormalizer(str(fact))
+                logger.debug('Checking fact {}'.format(fact_string))
+
                 rule_hit_match = self.filterFact(fact_string, 'hit-rule')
-                if (rule_hit_match is not None):
-                    temp_rule_hit.append(rule_hit_match)
-            hit_rule.append(temp_rule_hit)
+                if rule_hit_match is not None:
+                    temp_rule_hit.add(rule_hit_match)
+
+                bentuk_match = self.filterFact(fact_string, 'bentuk')
+                if bentuk_match is not None:
+                    logger.debug('Found bentuk {}'.format(bentuk_match))
+                    temp_fact_out.add(bentuk_match)
+
+                atribut_match = self.filterFact(fact_string, 'atribut')
+                if atribut_match is not None:
+                    logger.debug('Found atribut {}'.format(atribut_match))
+                    temp_fact_out.add(atribut_match)
+
+            self.run_result.append(CLIPSResult(temp_rule_hit, temp_fact_out))
             logger.debug('Hit rules: {}'.format(temp_rule_hit))
-        return hit_rule
+
+        return self.run_result
 
     def reset(self) -> None:
         for env in self.env:
@@ -125,5 +149,3 @@ class CLIPS():
 
     def isShapeLoaded(self) -> bool:
         return self.is_shape_init
-
-    # def isShapeMatched(self, )

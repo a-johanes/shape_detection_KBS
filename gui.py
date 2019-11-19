@@ -20,6 +20,7 @@ class GUI(wx.Frame):
 
         self.config = config
         self.clips = CLIPS(self.config)
+        self.selected_shape = None
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
         self.SetBackgroundColour(wx.Colour(208, 208, 208))
@@ -151,6 +152,8 @@ class GUI(wx.Frame):
 
         for shape in self.config['shape']:
             self.treeCreator(shape, shape_root)
+
+        self.shape_selector.Expand(shape_root)
 
         control_layout.Add(
             self.shape_selector, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND | wx.RIGHT | wx.LEFT, 10
@@ -297,12 +300,34 @@ class GUI(wx.Frame):
 
             shape_list = CVProcessor.processImage(pathname, self.config)
             self.clips.setShape(shape_list)
-            self.clips.run()
+            self.onRun()
+
+    def checkShape(self, result_list):
+        logger = logging.getLogger('gui/check-shape')
+        for idx, result in enumerate(result_list):
+            shape_fact = result.fact_out
+            logger.debug('Checking shape {}: {}'.format(idx, shape_fact))
+            include_set = set(self.selected_shape['include'])
+            logger.debug('Check with {}'.format(include_set))
+            if include_set.issubset(shape_fact):
+                logger.debug('Shape {} pass include test'.format(idx))
+                if len(set(self.selected_shape['exclude']).intersection(shape_fact)) == 0:
+                    logger.debug('Shape {} pass exclude test'.format(idx))
+                    return idx
+        return None
+
+    def onRun(self):
+        result_list = self.clips.run()
+
+        valid_shape = self.checkShape(result_list)
+
+        logging.getLogger('gui/run').info('Detected shape in index {}'.format(valid_shape))
 
     def onShapeSelect(self, event):
         item_data = self.shape_selector.GetItemData(event.GetItem())
         if item_data is not None:
             if not (('invalid' in item_data) and (item_data['invalid'])):
+                self.selected_shape = item_data
                 logging.getLogger('gui/tree-select').debug('Selected: {}'.format(item_data))
 
     def onOpenEditor(self, event):
@@ -386,7 +411,7 @@ class Editor(wx.Frame):
                 output.write(self.rich_text.GetValue())
         except Exception as e:
             raise Exception('Fail to save')
-            print(e)
+            logging.getLogger('gui/editor').error('Fail to save')
 
     def onExit(self, event):
         self.Close()
