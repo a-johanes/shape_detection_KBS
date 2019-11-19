@@ -8,5 +8,6 @@
     "degree_approx": 0,
     "length_approx": 0,
     "slope_eps": 0.001,
-    "kbs_file": "knowledge_base.clp"
+    "kbs_file": "knowledge_base.clp",
+    "shape_file": "shape.json"
 }

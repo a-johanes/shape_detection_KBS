@@ -1,3 +1,4 @@
+import logging
 import wx
 import wx.xrc
 import wx.richtext as rt
@@ -146,50 +147,10 @@ class GUI(wx.Frame):
             self.control_panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TR_DEFAULT_STYLE
         )
 
-        all_shapes = self.shape_selector.AddRoot('Semua Bentuk')
+        shape_root = self.shape_selector.AddRoot('Semua Bentuk')
 
-        irregular_triangle = self.shape_selector.AppendItem(all_shapes, "Segitiga Tidak Beraturan")
-        irregular_square = self.shape_selector.AppendItem(all_shapes, "Segiempat Tidak Beraturan")
-        irregular_pentagon = self.shape_selector.AppendItem(all_shapes, "Segilima Tidak Beraturan")
-        irregular_hexagon = self.shape_selector.AppendItem(all_shapes, "Segienam Tidak Beraturan")
-
-        acute_triangle = self.shape_selector.AppendItem(irregular_triangle, "Segitiga Lancip")
-        obtuse_triangle = self.shape_selector.AppendItem(irregular_triangle, "Segitiga Tumpul")
-        right_triangle = self.shape_selector.AppendItem(irregular_triangle, "Segitiga Siku-Siku")
-        isosceles_triangle = self.shape_selector.AppendItem(
-            irregular_triangle, "Segitiga Sama Kaki"
-        )
-        equilateral_triangle = self.shape_selector.AppendItem(
-            irregular_triangle, "Segitiga Sama Sisi"
-        )
-        parallelogram = self.shape_selector.AppendItem(irregular_square, "Jajaran Genjang")
-        trapezoid = self.shape_selector.AppendItem(irregular_square, "Trapesium")
-        equilateral_pentagon = self.shape_selector.AppendItem(
-            irregular_pentagon, "Segilima Sama Sisi"
-        )
-        equilateral_hexagon = self.shape_selector.AppendItem(
-            irregular_hexagon, "Segienam Sama Sisi"
-        )
-
-        isosceles_right_triangle = self.shape_selector.AppendItem(
-            isosceles_triangle, "Segitiga Sama Kaki dan Siku-Siku"
-        )
-        isosceles_obtuse_triangle = self.shape_selector.AppendItem(
-            isosceles_triangle, "Segitiga Sama Kaki dan Tumpul"
-        )
-        isosceles_acute_triangle = self.shape_selector.AppendItem(
-            isosceles_triangle, "Segitiga Sama Kaki dan Lancip"
-        )
-        isosceles_acute_triangle = self.shape_selector.AppendItem(
-            isosceles_triangle, "Segitiga Sama Kaki dan Lancip"
-        )
-        regular_square = self.shape_selector.AppendItem(parallelogram, "Segiempat Beraturan")
-        kite_shaped_square = self.shape_selector.AppendItem(
-            parallelogram, "Segiempat bentuk Layang-Layang"
-        )
-        isosceles_trapezoid = self.shape_selector.AppendItem(trapezoid, "Trapesium Sama Kaki")
-        right_aligned_trapezoid = self.shape_selector.AppendItem(trapezoid, "Trapesium Rata Kanan")
-        left_aligned_trapezoid = self.shape_selector.AppendItem(trapezoid, "Trapesium Rata Kiri")
+        for shape in self.config['shape']:
+            self.treeCreator(shape, shape_root)
 
         control_layout.Add(
             self.shape_selector, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND | wx.RIGHT | wx.LEFT, 10
@@ -339,7 +300,10 @@ class GUI(wx.Frame):
             self.clips.run()
 
     def onShapeSelect(self, event):
-        print(self.shape_selector.GetItemText(event.GetItem()))
+        item_data = self.shape_selector.GetItemData(event.GetItem())
+        if item_data is not None:
+            if not (('invalid' in item_data) and (item_data['invalid'])):
+                logging.getLogger('gui/tree-select').debug('Selected: {}'.format(item_data))
 
     def onOpenEditor(self, event):
         try:
@@ -361,6 +325,13 @@ class GUI(wx.Frame):
         data = self.clips.getFacts()
         rules = ReadOnlyWindow(None, "All Facts", data)
         rules.Show()
+
+    def treeCreator(self, shape, root):
+        item = self.shape_selector.AppendItem(root, shape['name'])
+        self.shape_selector.SetItemData(item, shape)
+        if 'child' in shape:
+            for child in shape['child']:
+                self.treeCreator(child, item)
 
     def __del__(self):
         pass

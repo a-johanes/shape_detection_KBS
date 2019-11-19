@@ -1,0 +1,171 @@
+[
+    {
+        "name": "Segitiga tidak beraturan",
+        "invalid": true,
+        "child": [
+            {
+                "name": "Segitiga lancip",
+                "include": [
+                    "segitiga",
+                    "lancip",
+                    "tidak beraturan"
+                ],
+                "exclude": [
+                    "sama sisi",
+                    "sama kaki"
+                ]
+            },
+            {
+                "name": "Segitiga tumpul",
+                "include": [
+                    "segitiga",
+                    "tumpul",
+                    "tidak beraturan"
+                ],
+                "exclude": [
+                    "sama kaki"
+                ]
+            },
+            {
+                "name": "Segitiga siku-siku",
+                "include": [
+                    "segitiga",
+                    "siku-siku",
+                    "tidak beraturan"
+                ],
+                "exclude": [
+                    "sama kaki"
+                ]
+            },
+            {
+                "name": "Segitiga sama kaki",
+                "invalid": true,
+                "child": [
+                    {
+                        "name": "Segitiga sama kaki dan siku-siku",
+                        "include": [
+                            "segitiga",
+                            "siku-siku",
+                            "sama kaki"
+                        ],
+                        "exclude": []
+                    },
+                    {
+                        "name": "Segitiga sama kaki dan tumpul",
+                        "include": [
+                            "segitiga",
+                            "sama kaki",
+                            "tumpul"
+                        ],
+                        "exclude": []
+                    },
+                    {
+                        "name": "Segitiga sama kaki dan lancip",
+                        "include": [
+                            "segitiga",
+                            "sama kaki",
+                            "lancip"
+                        ],
+                        "exclude": []
+                    }
+                ]
+            },
+            {
+                "name": "Segitiga sama sisi",
+                "include": [
+                    "segitiga",
+                    "sama sisi"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Segiempat tidak beraturan",
+        "include": [
+            "segiempat",
+            "tidak beraturan"
+        ],
+        "exclude": [
+            "sama sisi"
+        ],
+        "child": [
+            {
+                "name": "Jajaran genjang",
+                "include": [
+                    "jajaran Genjang",
+                    "tidak beraturan"
+                ],
+                "exclude": [],
+                "child": [
+                    {
+                        "name": "Segiempat beraturan",
+                        "include": [
+                            "jajaran genjang",
+                            "beraturan",
+                            "sama sisi"
+                        ],
+                        "exclude": []
+                    },
+                    {
+                        "name": "Segiempat berbentuk layang-layang",
+                        "include": [
+                            "jajaran genjang",
+                            "sama sisi",
+                            "bentuk layang-layang"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Trapesium",
+                "include": [
+                    "trapesium",
+                    "tidak beraturan"
+                ],
+                "exclude": [
+                    "sama kaki",
+                    "rata kiri",
+                    "rata kanan"
+                ],
+                "child": [
+                    {
+                        "name": "Trapesium sama kaki",
+                        "include": [
+                            "trapesium",
+                            "sama kaki"
+                        ],
+                        "exclude": []
+                    },
+                    {
+                        "name": "Trapesium rata kanan",
+                        "include": [
+                            "trapesium",
+                            "rata kanan"
+                        ],
+                        "exclude": []
+                    },
+                    {
+                        "name": "Trapesium rata kiri",
+                        "include": [
+                            "trapesium",
+                            "rata kiri"
+                        ],
+                        "exclude": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Segilima tidak beraturan",
+        "include": [],
+        "excule": [],
+        "child": []
+    },
+    {
+        "name": "Segienam tidak beraturan",
+        "include": [],
+        "excule": [],
+        "child": []
+    }
+]
