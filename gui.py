@@ -355,12 +355,10 @@ class GUI(wx.Frame):
         rules.Show()
 
     def onShowFacts(self, event):
-        try:
-            with open(self.config['kbs_file'], 'r') as file:
-                data = file.read()
-        except:
-            raise Exception('File not found')
-        rules = ReadOnlyWindow(None, "All Rules", data)
+        if not self.clips.isShapeLoaded():
+            raise Exception('Shape not loaded')
+        data = self.clips.getFacts()
+        rules = ReadOnlyWindow(None, "All Facts", data)
         rules.Show()
 
     def __del__(self):
