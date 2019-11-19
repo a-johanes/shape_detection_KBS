@@ -22,14 +22,14 @@ Deteksi bentuk dasar geometri berdasarkan *Knowledge Based System* (KBS)
     ```base
     $ python app.py
     ```
-2. Membuka gambar dengan tombol `Open Image`
+2. Membuka gambar dengan tombol `Buka Gambar`
 3. Memilih bentuk dasar geometri dari daftar bentuk
-4. Menekan tombol `Run` untuk mencari bentuk dasar geometri pada gambar
+4. Menekan tombol `Jalankan` untuk mencari bentuk dasar geometri pada gambar
 
 Selain itu, dapat dilakukan juga beberapa hal berikut:
-- Dapat melakukan perubahan pada rule dengan tombol `Open Rule Editor`
-- Dapat melihat rule yang ada pada program dengan tombol `Show Rules`
-- Dapat melihat fakta-fakta yang ada pada program dengan tombol `Show Facts`
+- Dapat melakukan perubahan pada rule dengan tombol `Buka Rule Editor`
+- Dapat melihat rule yang ada pada program dengan tombol `Tampilkan Rules`
+- Dapat melihat fakta-fakta yang ada pada program dengan tombol `Tampilkan Fakta`
 
 ## Author
   - 13517012 / Johanes
