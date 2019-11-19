@@ -7,7 +7,7 @@
     (sisi (from 2) (to 3) (length 20.0))
     (sisi (from 3) (to 4) (length 20.0))
     (sisi (from 4) (to 1) (length 20.0))
-    (jumlah-paralel (jumlah 2))
+    (paralel (jumlah 2))
     (sudut (id 1) (degree 90.0))
     (sudut (id 2) (degree 90.0))
     (sudut (id 3) (degree 90.0))

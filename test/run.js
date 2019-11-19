@@ -1,4 +1,7 @@
+#!/usr/bin/env node
+
 const { exec, spawn } = require('child_process');
+const { copyFileSync, unlinkSync } = require('fs');
 const MAX_TC = 20;
 
 const argv = process.argv.slice(2)
@@ -19,12 +22,15 @@ function doProcess(pass) {
             if (pass <= MAX_TC) {
                 console.log('\n\n');
                 doProcess(pass)
+            } else {
+                unlinkSync('kbs.clp');
             }
         }, 100);
     })
 }
 
 if (argv.length === 0) {
+    copyFileSync('../knowledge_base.clp', 'kbs.clp');
     doProcess(1);
 } else {
     console.log(`Wrong paramater, expected 0 argument, got ${argv.length} argument(s)`);
