@@ -1,0 +1,405 @@
+------------------------
+TC 1
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tc1
+TRUE
+CLIPS> CLIPS> tes id: 1
+ans: segitiga sama sisi
+bentuk: segitiga
+atribut: lancip
+tes id: 1
+ans: segitiga sama sisi
+bentuk: segitiga
+atribut: sama sisi
+CLIPS> 
+
+
+
+------------------------
+TC 2
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tc2
+TRUE
+CLIPS> CLIPS> tes id: 2
+ans: segitiga lancip
+bentuk: segitiga
+atribut: lancip
+tes id: 2
+ans: segitiga lancip
+bentuk: segitiga
+atribut: sama sisi
+tes id: 2
+ans: segitiga lancip
+bentuk: segitiga
+atribut: tidak beraturan
+CLIPS> 
+
+
+
+------------------------
+TC 3
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tc3
+TRUE
+CLIPS> CLIPS> tes id: 3
+ans: segitiga tumpul
+bentuk: segitiga
+atribut: tumpul
+tes id: 3
+ans: segitiga tumpul
+bentuk: segitiga
+atribut: sama sisi
+CLIPS> 
+
+
+
+------------------------
+TC 4
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tc4
+TRUE
+CLIPS> CLIPS> tes id: 4
+ans: segitiga siku-siku
+bentuk: segitiga
+atribut: siku-siku
+tes id: 4
+ans: segitiga siku-siku
+bentuk: segitiga
+atribut: sama sisi
+tes id: 4
+ans: segitiga siku-siku
+bentuk: segitiga
+atribut: tidak beraturan
+CLIPS> 
+
+
+
+------------------------
+TC 5
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tc5
+TRUE
+CLIPS> CLIPS> tes id: 5
+ans: segitiga sama kaki lancip
+bentuk: segitiga
+atribut: lancip
+tes id: 5
+ans: segitiga sama kaki lancip
+bentuk: segitiga
+atribut: sama sisi
+tes id: 5
+ans: segitiga sama kaki lancip
+bentuk: segitiga
+atribut: sama kaki
+CLIPS> 
+
+
+
+------------------------
+TC 6
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tc6
+TRUE
+CLIPS> CLIPS> tes id: 6
+ans: segitiga sama kaki tumpul
+bentuk: segitiga
+atribut: tumpul
+tes id: 6
+ans: segitiga sama kaki tumpul
+bentuk: segitiga
+atribut: sama sisi
+tes id: 6
+ans: segitiga sama kaki tumpul
+bentuk: segitiga
+atribut: sama kaki
+CLIPS> 
+
+
+
+------------------------
+TC 7
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tc7
+TRUE
+CLIPS> CLIPS> tes id: 7
+ans: segitiga sama kaki siku-siku
+bentuk: segitiga
+atribut: siku-siku
+tes id: 7
+ans: segitiga sama kaki siku-siku
+bentuk: segitiga
+atribut: sama sisi
+tes id: 7
+ans: segitiga sama kaki siku-siku
+bentuk: segitiga
+atribut: sama kaki
+CLIPS> 
+
+
+
+------------------------
+TC 8
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tc8
+TRUE
+CLIPS> CLIPS> tes id: 8
+ans: segiempat tidak beraturan
+bentuk: segiempat
+atribut: sama sisi
+tes id: 8
+ans: segiempat tidak beraturan
+bentuk: segiempat
+atribut: tidak beraturan
+CLIPS> 
+
+
+
+------------------------
+TC 9
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tc9
+TRUE
+CLIPS> CLIPS> tes id: 9
+ans: jajaran genjang (jajar genjang)
+bentuk: segiempat
+atribut: sama sisi
+tes id: 9
+ans: jajaran genjang (jajar genjang)
+bentuk: jajaran genjang
+atribut: sama sisi
+tes id: 9
+ans: jajaran genjang (jajar genjang)
+bentuk: jajaran genjang
+atribut: tidak beraturan
+CLIPS> 
+
+
+
+------------------------
+TC 10
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tc10
+TRUE
+CLIPS> CLIPS> tes id: 10
+ans: jajaran genjang (persegi panjang)
+bentuk: segiempat
+atribut: sama sisi
+tes id: 10
+ans: jajaran genjang (persegi panjang)
+bentuk: jajaran genjang
+atribut: beraturan
+tes id: 10
+ans: jajaran genjang (persegi panjang)
+bentuk: jajaran genjang
+atribut: sama sisi
+tes id: 10
+ans: jajaran genjang (persegi panjang)
+bentuk: jajaran genjang
+atribut: tidak beraturan
+CLIPS> 
+
+
+
+------------------------
+TC 11
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tes11
+TRUE
+CLIPS> CLIPS> tes id: 11
+ans: jajaran genjang beraturan
+bentuk: segiempat
+atribut: sama sisi
+tes id: 11
+ans: jajaran genjang beraturan
+bentuk: jajaran genjang
+atribut: beraturan
+tes id: 11
+ans: jajaran genjang beraturan
+bentuk: jajaran genjang
+atribut: sama sisi
+CLIPS> 
+
+
+
+------------------------
+TC 12
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tes12
+TRUE
+CLIPS> CLIPS> tes id: 12
+ans: jajaran genjang berbentuk layang layang
+bentuk: segiempat
+atribut: sama sisi
+tes id: 12
+ans: jajaran genjang berbentuk layang layang
+bentuk: jajaran genjang
+atribut: sama sisi
+tes id: 12
+ans: jajaran genjang berbentuk layang layang
+bentuk: jajaran genjang
+atribut: bentuk layang-layang
+CLIPS> 
+
+
+
+------------------------
+TC 13
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tes13
+TRUE
+CLIPS> CLIPS> tes id: 13
+ans: trapesium sembarang
+bentuk: segiempat
+atribut: sama sisi
+tes id: 13
+ans: trapesium sembarang
+bentuk: trapesium
+atribut: sama sisi
+tes id: 13
+ans: trapesium sembarang
+bentuk: trapesium
+atribut: tidak beraturan
+CLIPS> 
+
+
+
+------------------------
+TC 14
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tes14
+TRUE
+CLIPS> CLIPS> tes id: 14
+ans: trapesium sama kaki
+bentuk: segiempat
+atribut: sama sisi
+tes id: 14
+ans: trapesium sama kaki
+bentuk: trapesium
+atribut: sama sisi
+tes id: 14
+ans: trapesium sama kaki
+bentuk: trapesium
+atribut: sama kaki
+CLIPS> 
+
+
+
+------------------------
+TC 15
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tes15
+TRUE
+CLIPS> CLIPS> tes id: 15
+ans: trapesium rata kiri
+bentuk: segiempat
+atribut: sama sisi
+tes id: 15
+ans: trapesium rata kiri
+bentuk: trapesium
+atribut: sama sisi
+tes id: 15
+ans: trapesium rata kiri
+bentuk: trapesium
+atribut: rata-kiri
+CLIPS> 
+
+
+
+------------------------
+TC 16
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tes16
+TRUE
+CLIPS> CLIPS> tes id: 16
+ans: trapesium rata kanan
+bentuk: segiempat
+atribut: sama sisi
+tes id: 16
+ans: trapesium rata kanan
+bentuk: trapesium
+atribut: sama sisi
+tes id: 16
+ans: trapesium rata kanan
+bentuk: trapesium
+atribut: rata-kanan
+CLIPS> 
+
+
+
+------------------------
+TC 17
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tes17
+TRUE
+CLIPS> CLIPS> tes id: 17
+ans: segilima tidak beraturan
+bentuk: segilima
+atribut: sama sisi
+tes id: 17
+ans: segilima tidak beraturan
+bentuk: segilima
+atribut: tidak beraturan
+CLIPS> 
+
+
+
+------------------------
+TC 18
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tes18
+TRUE
+CLIPS> CLIPS> tes id: 18
+ans: segilima sama sisi
+bentuk: segilima
+atribut: sama sisi
+CLIPS> 
+
+
+
+------------------------
+TC 19
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tes19
+TRUE
+CLIPS> CLIPS> tes id: 19
+ans: segienam tidak beraturan
+bentuk: segienam
+atribut: sama sisi
+tes id: 19
+ans: segienam tidak beraturan
+bentuk: segienam
+atribut: tidak beraturan
+CLIPS> 
+
+
+
+------------------------
+TC 20
+
+         CLIPS (V6.24 06/15/06)
+CLIPS> Defining deffacts: tes20
+TRUE
+CLIPS> CLIPS> tes id: 20
+ans: segienam sama sisi
+bentuk: segienam
+atribut: sama sisi
+CLIPS> 

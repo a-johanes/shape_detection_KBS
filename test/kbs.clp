@@ -14,7 +14,7 @@
     (slot degree (type FLOAT))
 )
 
-(deftemplate paralel
+(deftemplate jumlah-paralel
     (slot jumlah (type INTEGER))
 )
 
@@ -96,7 +96,6 @@
     (test (neq ?id1 ?id2))
     (test (sama ?deg1 ?deg2 1))
     (test (sama ?l1 ?l2 5))
-    ; (test (not-sama 90 ?deg1 ?deg2))
     (test (eq ?from ?sisi-2-to))
     (test (eq ?to ?sisi-1-from))    
     =>
@@ -126,7 +125,7 @@
 
 (defrule jajaran-genjang
     ?bentuk <- (bentuk "segiempat")
-    (paralel (jumlah 2))
+    (jumlah-paralel (jumlah 2))
     (sudut (degree ?deg))
     =>
     (retract ?bentuk)
@@ -137,7 +136,7 @@
 
 (defrule trapesium
     ?bentuk <- (bentuk "segiempat")
-    (paralel (jumlah 1))
+    (jumlah-paralel (jumlah 1))
     =>
     (retract ?bentuk)
     (assert (bentuk "trapesium"))
@@ -220,11 +219,13 @@
 )
 
 (defrule print-solusi
-    (tes ?id)
+    (tes  ?id)
+    (ans ?ans)
     (bentuk ?bentuk)
     (atribut ?atribut)
     =>
     (printout t "tes id: " ?id crlf)
+    (printout t "ans: " ?ans crlf)
     (printout t "bentuk: " ?bentuk crlf)
     (printout t "atribut: " ?atribut crlf)
 )

@@ -1,0 +1,18 @@
+; segienam sama sisi
+(deffacts tes20
+    (tes 20) 
+    (ans "segienam sama sisi")
+    (objek (sisi 6))
+    (sisi (from 1) (to 2) (length 20.0))
+    (sisi (from 2) (to 3) (length 20.0))
+    (sisi (from 3) (to 4) (length 20.0))
+    (sisi (from 4) (to 5) (length 20.0))
+    (sisi (from 5) (to 6) (length 20.0))
+    (sisi (from 6) (to 1) (length 20.0))
+    (sudut (id 1) (degree 60.0))
+    (sudut (id 2) (degree 60.0))
+    (sudut (id 3) (degree 60.0))
+    (sudut (id 4) (degree 60.0))
+    (sudut (id 5) (degree 60.0))
+    (sudut (id 6) (degree 60.0))
+)

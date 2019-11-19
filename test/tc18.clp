@@ -1,0 +1,16 @@
+; segilima sama sisi
+(deffacts tes18
+    (tes 18)
+    (ans "segilima sama sisi")
+    (objek (sisi 5))
+    (sisi (from 1) (to 2) (length 20.0))
+    (sisi (from 2) (to 3) (length 20.0))
+    (sisi (from 3) (to 4) (length 20.0))
+    (sisi (from 4) (to 5) (length 20.0))
+    (sisi (from 5) (to 1) (length 20.0))
+    (sudut (id 1) (degree 72.0))
+    (sudut (id 2) (degree 72.0))
+    (sudut (id 3) (degree 72.0))
+    (sudut (id 4) (degree 72.0))
+    (sudut (id 5) (degree 72.0))
+)
