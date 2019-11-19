@@ -5,7 +5,6 @@ import wx.richtext as rt
 from cvProcessor import CVProcessor
 from clipsUtil import CLIPS
 
-# TODO: Add run button
 # TODO: Populate 3 bottom panel
 
 
@@ -81,27 +80,27 @@ class GUI(wx.Frame):
             wx.SystemSettings.GetColour(wx.SYS_COLOUR_APPWORKSPACE)
         )
 
-        detection_image_layout = wx.BoxSizer(wx.VERTICAL)
+        self.detection_panel_layout = wx.BoxSizer(wx.VERTICAL)
 
-        self.detection_image_title = wx.StaticText(
+        self.detection_panel_title = wx.StaticText(
             self.detection_image_panel, wx.ID_ANY, u"Detection Image", wx.DefaultPosition,
             wx.DefaultSize, 0
         )
-        self.detection_image_title.Wrap(-1)
+        self.detection_panel_title.Wrap(-1)
 
-        detection_image_layout.Add(
-            self.detection_image_title, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 5
+        self.detection_panel_layout.Add(
+            self.detection_panel_title, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 5
         )
 
-        self.detection_image_title = wx.StaticBitmap(
+        self.detection_panel_image = wx.StaticBitmap(
             self.detection_image_panel, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition,
             wx.Size(300, 300), 0
         )
-        detection_image_layout.Add(self.detection_image_title, 1, wx.ALL | wx.EXPAND, 5)
+        self.detection_panel_layout.Add(self.detection_panel_image, 1, wx.ALL | wx.EXPAND, 5)
 
-        self.detection_image_panel.SetSizer(detection_image_layout)
+        self.detection_image_panel.SetSizer(self.detection_panel_layout)
         self.detection_image_panel.Layout()
-        detection_image_layout.Fit(self.detection_image_panel)
+        self.detection_panel_layout.Fit(self.detection_image_panel)
         inner_layout_top.Add(self.detection_image_panel, 1, wx.EXPAND | wx.ALL, 5)
 
         self.control_panel = wx.Panel(
@@ -286,10 +285,10 @@ class GUI(wx.Frame):
         self.open_rule_button.Bind(wx.EVT_BUTTON, self.onOpenEditor)
         self.show_facts_button.Bind(wx.EVT_BUTTON, self.onShowFacts)
         self.show_rules_button.Bind(wx.EVT_BUTTON, self.onShowRules)
+        self.run_button.Bind(wx.EVT_BUTTON, self.onRun)
 
     def onOpenImageClicked(self, event):
         btn = event.GetEventObject().GetLabel()
-        print("Label of pressed button = ", btn)
         with wx.FileDialog(
             self,
             "Open Image",
@@ -311,7 +310,6 @@ class GUI(wx.Frame):
 
             shape_list = CVProcessor.processImage(pathname, self.config)
             self.clips.setShape(shape_list)
-            self.onRun()
 
     def checkShape(self, result_list):
         logger = logging.getLogger('gui/check-shape')
@@ -327,14 +325,33 @@ class GUI(wx.Frame):
                     return idx
         return None
 
-    def onRun(self):
+    def onRun(self, event):
         result_list = self.clips.run()
+        self.hit_rules_list.Clear()
+        self.matched_facts_list.Clear()
+        self.detection_result_list.Clear()
 
         valid_shape = self.checkShape(result_list)
         if valid_shape is not None:
             logging.getLogger('gui/run').info('Detected shape in index {}'.format(valid_shape))
             CVProcessor.genSelectedImage(self.file_name, self.config, valid_shape)
-            # TODO: Load hasil di temp.png ke wx
+            
+            image = wx.Image('temp.png', wx.BITMAP_TYPE_ANY)
+            width, height = self.source_panel_image.GetClientSize()
+            image = image.Scale(width, height)
+
+            self.detection_panel_image.SetBitmap(wx.Bitmap(image))
+            self.detection_panel_layout.RecalcSizes()
+
+            for result in result_list:
+                for hit_rule in result.hit_rule:
+                    self.hit_rules_list.Append(hit_rule)
+                
+                for fact_out in result.fact_out:
+                    self.matched_facts_list.Append(fact_out)
+            self.detection_result_list.Append('Yes')
+        else:
+            self.detection_result_list.Append('No')
 
     def onShapeSelect(self, event):
         item_data = self.shape_selector.GetItemData(event.GetItem())
