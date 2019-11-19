@@ -336,6 +336,7 @@ class GUI(wx.Frame):
 
             shape_list = CVProcessor.processImage(pathname, self.config)
             self.clips.setShape(shape_list)
+            self.clips.run()
 
     def onShapeSelect(self, event):
         print(self.shape_selector.GetItemText(event.GetItem()))

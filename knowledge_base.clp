@@ -110,7 +110,7 @@
     (assert (hit-rule "sama-kaki"))
 )
 
-(defrule tumpul  (atribut "sama sisi")
+(defrule tumpul 
     ?lancip <- (atribut "lancip")
     (bentuk "segitiga")
     (sudut (degree ?degree))
